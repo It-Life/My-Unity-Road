@@ -1,0 +1,265 @@
+syntax = "proto2";
+
+option java_package = "com.example.websocket.bean";
+option java_outer_classname = "PropertyBuyDo";
+
+//MainID{
+// MDM_HeartBeat=0,--心跳
+// MDM_GP_LOGON=1,--登录主CMD
+//MDM_GP_SERVER_LIST = 2,获取服务器列表
+//MDM_GP_USER_SERVICE=3,用户命令
+//}
+
+//Sub_CMD_C2S={
+   //  SUB_GP_HEART_BEAT=0,       //心跳
+   // SUB_GP_LOGON_ACCOUNTS=2,
+   
+   //SUB_GP_MODIFY_INSURE_PASS = 102,									//修改密码
+   
+   //SUB_GP_USER_SAVE_SCORE = 400,							            //存款操作
+   
+   //SUB_GP_USER_TAKE_SCORE = 401,							            //取款操作
+   
+   //SUB_GP_QUERY_INSURE_INFO = 404,							            //查询银行
+   
+   //SUB_GP_USER_INSURE_LOGON = 412,                                     //用户登录
+   
+   //SUB_GP_MEILI_DUIHUAN=450,心动值兑换
+
+   //SUB_GR_PROPERTY_BUY=500,购买道具
+   //SUB_GP_REQUEST_REFRESH_TREASURE=501,刷新玩家财产
+   //SUB_GP_NEW_PLAYER_GIFT = 700,                                     //新手礼包领取
+   
+   //SUB_GP_SIGN  =  701                                                 //签到      
+   //SUB_GP_GET_HEAD_URL  =  702                                         //根据游戏id获取头像  
+   //SUB_GP_GET_NOVICE_CARD  =  705                                      //获取新手卡礼品  
+   //SUB_GP_GET_ACTIVITY_CARD  =  706                                    //获取活动卡  
+   //SUB_GP_GET_RELIFE_MONEY  =  707                                     //获取救济金 
+   //SUB_GP_GET_PAY_PHONE =  708                                         //兑换花费 
+   //SUB_GP_GET_AWARD_GOLD  =  709                                       //兑换开心豆
+   //SUB_GP_GET_RECHARGE_RECORD  =  710                                  //查询兑换记录 
+   //SUB_GP_GET_MONTHLY_CARD_SCORE =  712                                //领取月卡每天开心豆   
+   //SUB_GP_SEND_PHONE_SMS  =  713                                       //发送验证码
+   //SUB_GP_CMD_GP_PHONE_BINDING  =  714                                 //手机绑定 
+   //SUB_GP_RESET_SAFE_PWD  =  715                                       //重置保险箱密码
+   //SUB_GP_REAL_NAME_AUTHENTITION  =  716                               //实名认证   
+   //SUB_GP_GET_NIKE_NAME  =  717                                        //根据游戏id获取名称
+   //SUB_GP_LUCK_DRAW  =  718                                            //抽奖  
+	//SUB_GP_GET_RECHAREGE_CASE_BAG =  720                               //领取累计充值礼包  
+	//SUB_GP_BOX_CONVERSION  =  721                                      //宝箱兑换 
+   
+//}
+
+//MainID = 3 , SubID =500
+message CMD_GR_C_PropertyBuy
+{
+required int32 dwSourceUserID = 1;//发起对象
+required int32 cbRequestArea = 2;//请求范围
+required int32 cbConsumeScore = 3;//积分消费
+required int32 wItemCount = 4;//购买数目
+required int32 wPropertyIndex = 5;//道具索引
+required string szTargetUser = 6;//使用对象
+required int32 cbUseNikeName = 7;//是否使用昵称
+required string szPassword = 8;
+
+}
+
+//登录 MainID = 1 , SubID = 2
+message CMD_GP_LogonAccounts
+{
+  required string unionid = 1;
+  required string sex = 2;
+  required string nickname = 3;
+  required string loginpass = 4;
+  required string surepass = 5;//123456//默认密码箱密码
+  required string headImgUrl = 6;
+  required string channelID = 7;
+  required int32 dwPlazaVersion = 8;
+  required string szMachineID = 9;
+  optional int32 cbValidateFlags = 10;
+  optional int32 cbPassPortID = 11;
+  optional string szPassPortID = 12;
+}
+
+//心动值兑换 MainID = 3,SubID= 450
+message CMD_GP_DuihuanMeiliRequest
+{
+required int32 dwUserID = 1;//用户 I D
+required int64 lExchangeNum = 2;//兑换数目
+required string szPassWord = 3;
+required string szMachineID = 4;
+}
+
+//登录银行 MainID = 3,SubID= 412
+message CMD_GP_UserInsureLogon
+{
+required int32 dwUserID = 1;//用户 I D  登陆银行
+required string szPassword = 2;//用户密码
+required string szMachineID = 3;//机器序列	
+}
+
+//修改保险箱密码 MainID = 3,SubID= 102
+message CMD_GP_ModifyInsurePass
+{
+required int32 dwUserID = 1;							
+required string szDesPassword = 2;	//新密码
+required string szScrPassword = 3;	//旧密码
+
+}
+
+//查询银行 MainID = 3,SubID= 404
+message CMD_GP_QueryInsureInfo
+{
+  required int32 dwUserID = 1;
+}
+
+//存入金币 MainID = 3,SubID= 400
+message CMD_GP_UserSaveScore
+{
+required int32 dwUserID = 1;//用户 I D
+required int32 wKindID = 2;//游戏KINDID
+required int64 lSaveScore = 3;//存入金币
+required string szMachineID = 4;
+
+}
+
+//提取金币 MainID = 3,SubID= 401
+message CMD_GP_UserTakeScore
+{
+
+required int32 dwUserID = 1;//用户 I D
+required int32 wKindID = 2;//游戏KINDID
+required int64 lTakeScore = 3;//存入金币
+required string szMachineID = 4;//机器序列
+required int32 cbStaty = 5;//首次使用
+required string szCodeID = 6;
+
+}
+//新手礼包领取 MainID = 3,SubID= 700
+message CMD_GP_NewPlayerGift
+{
+required int32 wGameID = 1;//游戏 I D
+required int32 wDayNum = 2;//当前应领取天数Index
+}
+
+//签到   MainID = 3 SubID = 701
+message CMD_GP_SignIn
+{
+	required int32 GameID = 1;//是否成功
+}
+
+//根据游戏id获取头像 MainID = 3,SubID= 702
+message CMD_GP_GetHeadUrl
+{
+required int32 GameID = 1;//游戏 I D
+}
+
+//获取新手卡礼品 MainID = 3,SubID= 705
+message CMD_GP_GetNoviceCard
+{
+required int32 GameID = 1;//游戏 I D
+required string CardNum = 2;//账号
+required string CardPass = 3;//密码
+}
+
+//获取活动卡   MainID = 3 SubID = 706
+message CMD_GP_GetActivityCard
+{
+required int32 GameID = 1;//游戏 I D
+required string CardNum = 2;//账号
+required string CardPass = 3;//密码
+}
+//领取救济金    MainID = 3 SubID = 707
+message CMD_GP_GetReliefMoney
+{
+required int32 GameID = 1;//游戏 I D
+required int32 Type = 2;//类型
+}
+//兑换话费     MainID = 3 SubID = 708
+message CMD_GP_GetPayPhone
+{
+    required int32 GameID = 1;//游戏 I D
+	required string Phone = 2;//手机号码
+	required int32 RID = 3;
+}
+//兑换开心豆     MainID = 3 SubID = 709
+message CMD_GP_GetAwardGold
+{
+    required int32 GameID = 1;//游戏 I D
+	required int32 RID = 2;
+}
+
+//查询兑换记录     MainID = 3 SubID = 710
+message CMD_GP_GetRechargeRecord
+{
+    required int32 GameID = 1;//游戏 I D
+}
+//领取月卡每天开心豆     MainID = 3 SubID = 712
+message CMD_GP_GetMonthlyCardScore
+{
+    required int32 GameID = 1;//游戏 I D
+}
+//发送验证码     MainID = 3 SubID = 713
+message CMD_GP_SendPhoneSms
+{
+    required int32 GameID = 1;//游戏 I D
+	required string Phone = 2;//手机号码
+	required int32 SmsType = 3;
+}
+
+//绑定手机     MainID = 3 SubID = 714
+message CMD_GP_PhoneBanding
+{
+    required int32 GameID = 1;//游戏 I D
+	required string Phone = 2;//手机号码
+	required int32 MsgID = 3;//发送验证码标识
+	required string SMS = 4;//验证码
+}
+
+//重置保险箱密码     MainID = 3 SubID = 715
+message CMD_GP_ResetSafePwd
+{
+    required int32 GameID = 1;//游戏 I D
+	required string Phone = 2;//手机号码
+	required int32 MsgID = 3;//发送验证码标识
+	required string SMS = 4;//验证码
+	required string Pwd = 5;//密码
+}
+
+//实名认证     MainID = 3 SubID = 716
+message CMD_GP_RealNameAuthentication
+{
+    required int32 GameID = 1;//游戏 I D
+	required string Compellation = 2;//真实姓名
+	required string PassPortID = 3;//身份证号
+}
+
+//根据游戏id获取名称    MainID = 3 SubID = 717
+message CMD_GP_GetNickName
+{
+	required int32 GameID = 1;//游戏 I D
+}
+
+//抽奖    MainID = 3 SubID = 718
+message CMD_GP_LuckDraw
+{
+	required int32 GameID = 1;//游戏 I D
+	required int32 LuckNum = 2;//次数
+}
+
+
+//领取累计充值礼包     MainID = 3 SubID = 720
+message CMD_GP_GetRechargeCaseBag
+{
+	required int32 GameID = 1;//游戏id
+	optional int32 casegradeid = 2;
+}
+
+//宝箱兑换     MainID = 3 SubID = 721
+message CMD_GP_BoxConversion
+{
+required int32 GameID = 1;//游戏 I D
+required int32 BoxId = 2;//要兑换的宝箱 I D
+required int32 Count = 3;//兑换数量
+}
+

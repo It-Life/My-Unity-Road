@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+option java_package = "com.kxqp.kxqp.bean";
+option java_outer_classname = "ProtoMailDo";
+
+//邮箱    	MainID = 3 SubID = 722
+message CMD_GP_GetMailBox
+{
+	message CMD_GP_MailBox
+	{
+		optional int32 type = 1; //邮箱类型
+		optional string title = 2; //邮件标题
+		optional string time = 3;	//邮件时间
+		optional string content = 4;//邮件内容
+		optional string gift = 5;	//邮件奖品
+		optional int32 giftStatus = 6;//奖品状态
+		optional int32 readStatus = 7;//邮件读取状态
+	}
+	repeated CMD_GP_MailBox mailBox = 1;//CMD_GP_MailBox
+}

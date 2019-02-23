@@ -1,0 +1,132 @@
+package game.oxchange.s2c;
+option optimize_for = LITE_RUNTIME;
+
+//游戏状态 空闲状态SceneState.FREE
+message CMD_S2C_StatusFree
+{
+	required		int64			cellScore=1;						//基础积分
+	repeated		int64			turnScore=2;						//积分信息
+	repeated		int64			collectScore=3;						//积分信息
+	required		string			gameRoomName=4;						//游戏房间名
+	required		bool			gameOption=5;						//游戏配置
+	required		int32			callTime=6;							//叫庄时间
+	required		int32			betTime=7;							//押注时间
+	required		int32			openTime=8;							//开牌时间
+}
+
+//游戏状态 叫庄状态 SceneState.CALL_BANKER
+message CMD_S2C_StatusCall
+{
+	required		int32			callBanker=1;						//叫庄用户
+	required		int32			dynamicJoin=2;						//动态加入
+	repeated		int32			playStatus=3;						//用户状态
+	repeated		int64			turnScore=4;						//积分信息历史积分
+	repeated		int64			collectScore=5;						//积分信息
+	required		string			gameRoomName=6;						//游戏房间名
+	required		bool			gameOption=7;						//游戏配置
+	required		int32			callTime=8;							//叫庄时间
+	required		int32			betTime=9;							//押注时间
+	required		int32			openTime=10;						//开牌时间
+}
+
+//游戏状态 押注状态SceneState.BET
+message CMD_S2C_StatusScore
+{
+	repeated		int32			playStatus=1;						//用户状态
+	required		int32			dynamicJoin=2;						//动态加入
+	required		int64			turnMaxScore=3;						//积分信息
+	repeated		int64			tableScore=4;						//积分信息
+	required		int32			bankerUser=5;						//庄家用户
+	required		string			gameRoomName=6;						//游戏房间名
+	repeated		int64			turnScore=7;						//积分信息历史积分
+	repeated		int64			collectScore=8;						//积分信息
+	required		bool			gameOption=9;						//游戏配置
+	required		int32			callTime=10;						//叫庄时间
+	required		int32			betTime=11;							//押注时间
+	required		int32			openTime=12;						//开牌时间
+}
+
+//游戏状态 游戏比牌中状态SceneState.OPEN
+message CMD_S2C_StatusPlay
+{
+	repeated		int32			playStatus=1;						//用户状态
+	required		int32			dynamicJoin=2;						//动态加入
+	required		int64			turnMaxScore=3;						//积分信息
+	repeated		int64			tableScore=4;						//下注数目 
+	required		int32			bankerUser=5;						//庄家用户
+	repeated		bytes			handCardData=6;						//桌面扑克
+	required		bytes			oxCard=7;							//牛牛数据
+	repeated		int64			turnScore=8;						//积分信息历史积分
+	repeated		int64			collectScore=9;						//积分信息
+	required		string			gameRoomName=10;					//游戏房间名
+	required		bool			gameOption=11;						//游戏配置
+	required		int32			callTime=12;						//叫庄时间
+	required		int32			betTime=13;							//押注时间
+	required		int32			openTime=14;						//开牌时间
+}
+
+//用户叫庄
+message CMD_S2C_CallBanker
+{
+	required		int32			callBanker=1;						//叫庄用户
+	required		int32			firstTimes=2;						//首次叫庄
+}
+
+//游戏开始
+message CMD_S2C_GameStart
+{
+	required		int64			turnMaxScore=1;						//最大下注
+	required		int32			bankerUser=2;						//庄家用户
+}
+
+//用户下注
+message CMD_S2C_AddScore
+{
+	required		int32			addScoreUser=1;						//加注用户
+	required		int64			addScoreCount=2;					//加注数目
+}
+
+//游戏结束
+message CMD_S2C_GameEnd
+{
+	repeated		int64			gameTax=1;							//游戏税收
+	repeated		int64			gameScore=2;						//游戏得分
+	required		int64			userGold=3;							//用户累计
+	required		int64			moneyScore=4;						//彩金数目
+	repeated		int32			lookTable=5;						//无法加入
+}
+
+//发牌数据包
+message CMD_S2C_SendCard
+{
+	repeated		bytes			cardData=1;							//用户扑克
+	required		int32			playerCount=2;						//玩家数量
+}
+
+//用户退出
+message CMD_S2C_PlayerExit
+{
+	required		int32			playerId=1;							//退出用户
+}
+
+//用户摊牌
+message CMD_S2C_OpenCard
+{
+	required		int32			playerId=1;							//摊牌用户
+	required		int32			open=2;								//摊牌标志
+}
+
+//接收到表情或者文字
+message CMD_S2C_ReceiveEmotion                                          
+{
+	required		int32			playerId=1;							//发表情的玩家位置id
+	required		int32			type=2;			                    //表情类型，表情或者文字
+	required		int32			emotionId=3;						//表情id/文字id		
+}
+
+//刷新玩家积分信息
+message CMD_S2C_PostServiceCharge
+{
+	required		int32			playerId=1;			               //玩家id				
+	required		int32			serviceCharge=2;				   //分数（刷新的玩家身上的分数）			
+}

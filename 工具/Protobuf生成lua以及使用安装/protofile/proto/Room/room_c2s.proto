@@ -1,0 +1,103 @@
+package room.c2s;
+option optimize_for = LITE_RUNTIME;
+
+//游戏房间登录
+message CMD_GR_LogonUserID
+{
+	required		int32			plazaVersion=1;						//广场版本
+	required		int32			frameVersion=2;					    //框架版本
+	required		int32			processVersion=3;					//进程版本
+	required		int32			userId=4;							//用户ID
+	required		string			password=5;							//密码
+	required		string			machineId=6;						//机器码
+	required		int32			kindId=7;							//游戏类型ID
+}
+
+//用户规则
+message CMD_GR_UserRule
+{
+	required		int32			ruleMask=1;							//规则掩码
+	required		int32			minWinRate=2;						//最低胜率
+	required		int32			maxFleeRate=3;						//最高逃率
+	required		int32			maxGameScore=4;						//最高分数
+	required		int32			minGameScore=5;						//最低分数
+	optional		string 			tablePassword=6;					//桌子密码
+}
+
+//玩家坐下
+message CMD_GR_UserSitDown
+{
+	required		int32			tableId=1;							//桌子ID
+	required		int32			chairId=2;							//椅子ID
+	optional		string			password=3;							//密码
+}
+
+//玩家站起
+message CMD_GR_UserStandUp
+{
+	required		int32			tableId=1;							//桌子ID
+	required		int32			chairId=2;							//椅子ID
+	required		int32			forceLeave=3;						//强行离开
+}
+
+//玩家聊天
+message CMD_GR_C_UserChat
+{
+	required		int32			chatColor=1;						//聊天颜色
+	required		int32			sendUserId=2;						//发送用户ID
+	required		int32			targetUserId=3;						//目标用户ID
+	required		string			chatString=4;						//聊天字符串
+}
+
+//玩家表情
+message CMD_GR_C_UserExpression
+{
+	required		int32			itemIndex=1;						//表情索引
+	required		int32			sendUserId=2;						//发送用户ID
+	required		int32			targetUserId=3;						//目标用户ID
+}
+
+//踢出用户
+message CMD_GR_KickUser
+{
+	required		int32			targetUserId=1;						//目标用户ID
+}
+
+//请求用户信息
+message CMD_GR_UserInfoReq
+{
+	required		int32			userIdReq=1;						//请求用户
+	required		int32			tablePos=2;							//桌子位置
+}
+
+//请求用户信息
+message CMD_GR_ChairUserInfoReq
+{
+	required		int32			tableId=1;							//桌子ID
+	required		int32			chairId=2;							//椅子ID
+}
+
+//游戏配置
+message CMD_GF_GameOption
+{
+	optional		int32			frameVersion=1;					    //框架版本
+	optional		int32			clientVersion=2;					//客户端版本
+	required		int32			setScore=3;							//分数设置
+}
+
+//玩家聊天
+message CMD_GF_C_UserChat
+{
+	required		int32			chatColor=1;						//聊天颜色
+	required		int32			sendUserId=2;						//发送用户ID
+	required		int32			targetUserId=3;						//目标用户ID
+	required		string			chatString=4;						//聊天字符串
+}
+
+//玩家表情
+message CMD_GF_C_UserExpression
+{
+	required		int32			itemIndex=1;						//表情索引
+	required		int32			sendUserId=2;						//发送用户ID
+	required		int32			targetUserId=3;						//目标用户ID
+}

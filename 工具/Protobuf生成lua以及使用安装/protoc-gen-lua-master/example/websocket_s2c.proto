@@ -1,0 +1,713 @@
+syntax = "proto2";
+
+option java_package = "com.kxqp.kxqp.bean";
+option java_outer_classname = "ProtoDo";
+
+
+//MainID{
+// MDM_GP_LOGON=1,--登录主CMD
+//MDM_GP_SERVER_LIST = 2,获取服务器列表
+//MDM_GP_USER_SERVICE=3,用户命令
+//}
+//Sub_CMD_S2C={
+//SUB_GP_LOGON_SUCCESS = 100,									//登录成功
+//SUB_GP_LOGON_FAILURE = 101,									--登录失败
+//SUB_GP_LIST_KIND=101,//种类列表
+//SUB_GP_LOGON_FINISH=102,//登录完成
+//SUB_GP_LIST_SERVER = 104,							    //房间列表
+
+//SUB_GP_CHANGE_ACCOUNT=201,//顶号信息
+
+//SUB_GP_USER_INSURE_INFO = 403,								        //银行资料
+//SUB_GP_USER_INSURE_SUCCESS = 405,								    //银行成功
+//SUB_GP_USER_INSURE_FAILURE = 406,                          --存、取银行失败
+//SUB_GP_USER_QUERY_FAILURE=407,                            --银行查询失败
+//    SUB_GP_USER_INSURE_LOGON_SUCCESS = 413,                    --银行登录成功 无消息体
+//    SUB_GP_USER_INSURE_LOGON_FAILURE = 414,                    --银行登录失败
+
+//SUB_GP_OPERATE_SUCCESS = 426,									    //操作成功 
+//SUB_GP_OPERATE_INSURE_FAILURE = 427,                       --保险箱密码修改失败
+// SUB_GP_MEILI_DUIHUAN_SUCCESS = 451,								//心动值兑换成功
+//SUB_GP_MEILI_DUIHUAN_FAILURE = 452,                        --魅力兑换失败
+
+//SUB_GR_PROPERTY_SUCCESS = 501,							//道具成功
+//SUB_GR_PROPERTY_FAILURE = 502,							//道具失败
+
+//SUB_GP_GIFT_NUM_OF_PEOPLE=600,                               //春节礼包人数
+//SUB_GP_TREASURE_CHANGE=601,                                  //玩家财产变化 
+// SUB_GP_RANK=602,                                              //排行榜
+// SUB_GP_FISHRANK = 603,                                        //捕鱼排行榜
+// SUB_GP_NewDayRefresh=604,                                     //0点签到等推送
+
+//SUB_GP_MODELS_SWITCH = 700                                  //大厅所有功能模块的开关
+//}
+
+//MainID=3,SubID=501
+message CMD_GR_S_PropertySuccess
+{
+
+optional int32 cbRequestArea = 1;//使用环境
+optional int32 wItemCount = 2;//购买数目
+optional int32 wPropertyIndex = 3;//道具索引
+required int32 dwSourceUserID = 4;//目标对象
+required int32 dwTargetUserID = 5;//使用对象
+optional int32 dwLoveLess = 6;//增加心动值
+optional string szTargetNickName = 7;//使用对象昵称
+
+}
+
+//zeng-song道具失败 MainID = 3,SubID= 502,427,452,414,406,407,  MainID=1 Sub=101
+message ResultFailure
+{
+optional int32 wRequestArea = 1;//请求区域
+required int32 lErrorCode = 2;//错误代码
+required string szDescribeString = 3;//描述信息
+}
+
+//caozuo银行成功 MainID = 3,SubID= 405
+message CMD_GP_UserInsureSuccess
+{
+
+required int32 dwUserID = 1;//用户 I D
+required int64 lUserScore = 2;//用户金币
+required int64 lUserInsure = 3;//银行金币
+required string szDescribeString = 4;//描述信息
+}
+
+//银行资料 MainID = 3,SubID= 403
+message CMD_GP_UserInsureInfo
+{
+  required int32 wRevenueTake = 1;
+  required int32 wRevenueTransfer = 2;
+  required int32 wServerID = 3;
+  required int32 wMemberOrder = 4;
+  required int64 lUserScore = 5;
+  required int64 lUserInsure = 6;
+  required int64 lTransferPrerequisite = 7;
+  required int64 lLoveNess = 8;
+  required int64 MeiliDuihuanRatio = 9;
+  required int64 MeiliDuihuanMax = 10;
+  required int64 MeiliDuihuanDailyCount = 11;
+  required int64 DailyDuihuanCount = 12;
+}
+
+//操作成功 MainID = 3,SubID= 426
+message CMD_GP_OperateSuccess
+{
+required int32 lResultCode = 1;//操作代码
+required string szDescribeString = 2;//成功消息
+}
+
+//心动值兑换成功 MainID = 3,SubID= 451
+message CMD_GP_MeiliDuihuanSuccess
+{
+required int32 dwUserID = 1;//用户 I D
+required int64 lUserScore = 2;//用户金币
+required int64 lUserLoveness = 3;//银行心动值
+required string szDescribeString = 4;//描述消息
+}
+
+
+
+
+//UserInfo
+
+message GiftBag
+{
+	optional int32 giftBag1=1;
+	optional int32 giftBag2=2;
+	optional int32 giftBag3=3;
+	optional int32 giftBag4=4;
+}
+
+message ActivityConfig
+{
+	optional string activityName=1;
+	optional int32 activityid=2;
+	optional string startTime=3;
+	optional string endTime=4;
+}
+
+message Activity
+{
+	optional int32 status=1;
+	optional string startTime=2;
+	optional string endTime=3;
+	optional string reward=4;
+}
+message MemberInfo
+{
+	optional string memberSwitchDate = 1;
+	optional int32 memberOrder = 2;
+	optional int32 memberDays = 3;
+}
+message RechargeCaseBag
+{
+	optional int32 rechargeCaseBag1=1;
+	optional int32 rechargeCaseBag2=2;
+	optional int32 rechargeCaseBag3=3;
+	optional int32 rechargeCaseBag4=4;
+	optional int32 rechargeCaseBag5=5;
+	optional int32 rechargeCaseBag6=6;
+	optional int32 rechargeCaseBag7=7;
+}
+message Secure
+{
+	optional string compellation=1;
+	optional string passPortID = 2;
+	optional int32 isSecure=3;
+	optional string verificationPhone=4;
+}
+message Novice
+{
+	optional string noviceCard=1;
+	optional string quota=2;
+	optional string durationTerm=3;
+	optional int32 cardDay=4;
+	optional int32 cardState=5;
+}
+message Hall
+{
+	optional int32 type1 =1;
+	optional int32 type2 =2;
+}
+message Relief
+{
+	optional int32 reliefNum=1;
+	optional int32 countDown=2;
+	optional int32 conditions=3;
+}
+message NewGiftBag
+{
+	optional int32 newGiftBag1=1;
+	optional int32 newGiftBag2=2;
+	optional int32 newGiftBag3=3;
+	optional int32 newGiftBag4=4;
+}
+message LanternBag
+{
+	optional int32 lanternBag1=1;
+	optional int32 lanternBag2=2;
+	optional int32 lanternBag3=3;
+	optional int32 lanternBag4=4;
+}
+message HomeConfig
+{
+	repeated FunctionalConfig functionalConfig=1;
+	optional LuckDraw luckDraw=2;
+	repeated RechargeCase rechargeCase=3;
+	optional string sign = 4;
+	repeated BoxDate boxDate=5;
+	optional string relief=6;
+	optional string share = 7;
+	repeated BoxConfig boxConfig=8;
+	repeated RechargeConfig rechargeConfig=9;
+	repeated NewGift newGift=10;
+	repeated Lantern lantern=11;
+}
+message FunctionalConfig
+{
+	optional string key =1;
+	optional string value = 2;
+}
+message FunctionalConfig1
+{
+	optional int32 bank = 1;
+	optional int32 actCard = 2;
+	optional int32 ReliefMoney= 3;
+	optional int32 Activity= 4;
+	optional int32 MonCard= 5;
+	optional int32 DailyGift= 6;
+	optional int32 RankList= 7;
+	optional int32 NewCard= 8;
+	optional int32 GivePresent= 9;
+	optional int32 isAudit= 10;
+	optional int32 isH5Pay= 11;
+	optional int32 HorseLamp= 12;
+	optional int32 Extension= 13;
+	optional string RunContent= 14;
+	optional int32 ReliefMoneyShare= 15;
+	optional int32 Register= 16;
+	optional int32 PersonalCenter= 17;
+	optional int32 ExchangeCenter= 18;
+	optional int32 Sign= 19;
+	optional int32 BindPhone= 20;
+	optional string ShCirFriends= 21;
+	optional int32 ShoppingMall= 22;
+	optional int32 SetUp= 23;
+	optional int32 Share= 24;
+	optional int32 ShFriends= 25;
+	optional int32 NewGift= 26;
+}
+message LuckDraw
+{
+	optional string activityTime=1;
+	optional string luchDrawAmount=2;
+	optional int32 luchDrawNum=3;
+}
+message RechargeCase
+{
+	optional int32 price = 1;
+	optional int32 casegradeid= 2;
+	optional int32 score= 3;
+	optional int32 mid= 4;
+	optional int32 membershipperiod= 5;
+}
+message BoxDate
+{
+	optional int32 key=1;
+	repeated BoxDateInfo boxDateInfo =2 ;
+}
+message BoxDateInfo
+{
+	optional int32 goodsType=1;
+	optional int32 goodsValue=2;
+}
+message BoxConfig
+{
+	optional int32 boxID=1;
+	optional int32 boxType=2;
+	optional int32 boxValue=3;
+}
+message RechargeConfig
+{
+	optional string payID = 1;
+	optional string value=2;
+}
+message NewGift
+{
+	optional string payID = 1;
+	optional int64 gold= 2;
+	optional string multiple= 3;
+	optional int32 member= 4;
+	optional int32 memberday= 5;
+	optional int32 actualvalue= 6;
+	optional int32 originalprice= 7;
+	optional int32 nowprice= 8;
+}
+message Lantern
+{
+	optional string payID = 1;
+	optional int64 gold= 2;
+	optional string multiple= 3;
+	optional int32 member= 4;
+	optional int32 memberday= 5;
+	optional int32 actualvalue= 6;
+	optional int32 originalprice= 7;
+	optional int32 nowprice= 8;
+}
+message MonthlyCard
+{
+	optional int32 days=1; //剩余天数
+	optional int32 status = 2;//0表示没购买月卡 1表示购买了29月月卡 2是99 3是199
+	optional int32 hasGetted=3;//是否能领取
+	optional string deadLine=4;//到期时间
+}
+message NovicePack
+{
+  optional int32 daynum=1;
+  optional int32 status=2;
+  optional double money=3;
+}
+
+//MainID=3 SubID=604
+message CMD_GP_NewDayRefresh
+{
+   optional GiftBag giftBag= 1;
+   optional Hall hall=2;
+   optional Relief relief=3;
+   optional string todayHasSigned=4;//是否已经签到
+   optional int32  aStatus=5;//是否首次登陆
+}
+
+
+message CMD_GP_LogonSuccess
+{
+//玩家用户信息 MainID = 3 SubID = 602
+message CMD_GP_UserInfo
+{
+	required GiftBag giftBag= 1;
+	repeated ActivityConfig activityConfig = 2;
+	optional string rechargeCaseMoney=3;
+	optional MemberInfo memberInfo = 4;
+	optional RechargeCaseBag rechargeCaseBag = 5;
+	optional Secure secure=6;
+	optional Novice novice=7;
+	optional Hall hall = 8;
+	optional int32 aStatus=9;
+	optional int32 continuousDaysSigned=10;
+	optional string teaRoomName=11;
+	optional Relief relief=12;
+	optional NewGiftBag newGiftBag = 13;
+	optional string teaRoomQR=14;
+	optional string todayHasSigned=15;
+	optional Activity activity=16;
+	optional MonthlyCard monthlyCard=17;
+	optional HomeConfig homeConfig = 18;
+	repeated NovicePack novicePack=19;
+	optional int32 NewSkin = 20;
+	optional string dwNewPlayerTime = 21;
+	optional bool  isOpenMiniGame=22;
+	optional LanternBag lanternBag = 23;
+}
+
+  required int32 wFaceID = 1;
+  required int32 dwUserID = 2;
+  required int32 dwGameID = 3;
+  required int32 dwCustomID = 4;
+  required int32 dwUserMedal = 5;
+  required int32 dwExperience = 6;
+  required int32 dwLoveLiness = 7;
+  required int32 lTicket = 8;
+  required int32 dwSpreaderID = 9;
+  required int64 lUserScore = 10;
+  required int64 lUserInsure = 11;
+  required int32 cbGender = 12;
+  optional int32 cbMoorMachine = 13;
+  required string szAccounts = 14;
+  required string szNickName = 15;
+  required int32 wInSpreaderID = 16;
+  required int32 cbMemberOrder = 17;
+  optional string szUnderWrite = 18;
+  optional string dwPwd = 19;
+  optional CMD_GP_UserInfo userInfo=20;
+
+}
+
+//登陆完成 MianID 1 SubID = 102
+message CMD_GP_LogonFinish
+{
+required int32 wKindID = 1;//游戏KINDID
+required int32 wServerID = 2;//房间号
+
+}
+
+
+//游戏房间 MainID = 2 SubID = 104
+message CMD_GP_GameServer
+{
+message GameServer 
+{
+	required int32 wKindID = 1;//名称索引
+	required int32 wNodeID = 2;//节点索引
+	required int32 wSortID = 3;//排序索引
+	required int32 wServerID = 4;//房间索引
+	required int32 wServerPort = 5;//房间端口
+	required int32 dwOnLineCount = 6;//在线人数
+	required int32 dwFullCount = 7;//满员人数
+	required int32 wServerType = 8;//服务器类型
+	required string szServerAddr = 9;//房间地址
+	required string szServerName = 10;//房间名称
+	required int64 lMinEnterScore = 11;//最低进入
+	required int64 lMaxEnterScore = 12;//最高进入
+	required int32 wServerKind = 13;//房间类型
+	required int32 wServerLevel = 14;//房间等级
+	required int64 lCellScore = 15;//单元积分
+	required int64 lEnterScore = 16;//进入积分
+	required int32 cbEnterMember = 17;//进入会员
+	required int32 dwServerRule = 18;//房间规则
+	required int32 dwSurportType = 19;//支持类型
+	required int32 wTableCount = 20;//桌子数目
+	required int32 isChargeRoom = 21;
+}
+	repeated GameServer gameserver = 1;
+}
+
+//游戏类型 MainID = 2 SubID = 101
+
+message CMD_GP_GameKind
+{
+	message GameKind
+	{
+		required int32 wTypeID = 1;//类型索引
+		required int32 wJoinID = 2;//挂接索引
+		required int32 wSortID = 3;//排序索引
+		required int32 wKindID = 4;//类型索引
+		required int32 wGameID = 5;//模块索引
+		required int32 dwOnLineCount = 6;//在线人数
+		required int32 dwFullCount = 7;//满员人数
+		required string szKindName = 8;//游戏名字
+		required string szProcessName = 9;//进程名字
+	}
+	repeated GameKind gamekind = 1;
+}
+
+//游戏类型 MainID = 3 SubID = 600
+
+message CMD_GP_GiftDetail
+{
+	message GiftDetail
+	{
+		required int32 type = 1;//礼包类型
+		required int32 num = 2;//礼包人数
+	}
+	repeated GiftDetail giftDetail = 1;
+}
+
+//游戏类型 MainID = 3 SubID = 610
+
+message CMD_GP_LanternGiftDetail
+{
+	message LanternGiftDetail
+	{
+		required int32 type = 1;//礼包类型
+		required int32 num = 2;//礼包人数
+	}
+	repeated LanternGiftDetail lanterngiftDetail = 1;
+}
+
+//顶号 MainID = 1 SubID = 201
+
+message CMD_GP_ChangeAccount
+{
+	required string msg = 1;
+}
+
+//玩家财产变化 MainID = 3 SubID = 601
+
+message CMD_GP_TreasureChange
+{  
+	optional  int64 score = 1;//玩家分数
+	optional  int32 memberType=2;//玩家会员类型
+	optional  string memberInfo=3;//玩家会员信息
+	optional  int32  loveliness=4;//玩家心动值
+	optional  int32  ticket=5;      //玩家奖券数
+	optional  int32  newGiftCharge=6;  //新年累充活动的充值总额
+	optional  int32  luckDraw=7;  //剩余的抽奖次数
+	optional  MonthlyCard monthlyCard=8; //月卡信息
+	optional  int32       rechargeID=9;  //充值ID
+	optional  int32       rechargeType=10; //充值类型
+}
+
+
+
+//排行榜 MainID = 3 SubID = 602
+
+message SUB_GP_RANK
+{
+	message GoldRank
+	{
+		required int32 ranking = 1;//排名
+		required int32 gameid = 2;//游戏id
+		required int32 memberorder = 3;//会员等级
+		required string nickname = 4;//昵称
+		required int64 score = 5;//金币
+	}
+	repeated GoldRank goldRank = 1;
+	required int32 selfRank = 2;//自己的排名
+	optional int32 showRank = 3;//是否显示排行榜 0-开 ，1-关闭
+}
+
+//捕鱼排行榜 MainID = 3 SubID = 603
+
+message SUB_GP_FISHRANK
+{
+	message FishRank
+	{
+		required int32 Rank = 1;//排名
+		required int32 GameID = 2;//游戏id
+		required int32 MemberOrder = 3;//会员等级
+		required string NickName = 4;//昵称
+		required int32 CatchedFishNum = 5;//捕获鱼数量
+		required string UpdateTime = 6;//更新时间
+	}
+	repeated FishRank fishRank = 1;
+	required int32 selfRank = 2;//自己的排名
+}
+
+//新手礼包领取成功与否 MainID = 3 SubID = 605
+
+message SUB_GP_NEWPLAYGIFTFLAG
+{
+	required int32 flag = 1;//成功与否 0失败1成功
+	required string msg = 2;//返回消息
+}
+
+//大厅所有功能模块的开关 MainID = 3 SubID = 700
+
+message SUB_GP_AllModelsSwitch
+{
+	message AllModelsSwitch
+	{
+		required int32 ModelID = 1;//模块id
+		required int32 IsShow = 2;//是否启用模块0-开，1-关闭
+	}
+	repeated AllModelsSwitch allModelsSwitch = 1;//SUB_GP_ALL_MODELS_SWITCH
+}
+
+//根据游戏ID返回签到是否成功   MainID = 3 SubID = 701
+message CMD_GP_SignIn
+{
+	required string flag = 1;//是否成功
+	optional string msg = 2;//错误信息
+	optional string gold = 3;//获得的金币
+}
+
+//根据gameID获取图像 MainID = 3 SubID = 702
+message CMD_GP_GetHeadUrl
+{
+	required string flag = 1;//返回信息
+}
+
+// 购买开心豆,返回transid给客户端   MainID = 3 SubID = 703
+//message CMD_GP_PurchaseHappyBean
+//{
+//	required string transid = 1;//返回transid,错误是error
+//}
+
+// 获取交易结果  MainID = 3 SubID = 704
+//message CMD_GP_GetTransactionResult
+//{
+//	required string flag = 1;//返回交易结果，正确是sucess，错误是空字符串
+//}
+
+//获取新手卡礼品  MainID = 3 SubID = 705
+message CMD_GP_GetNoviceCard
+{
+	optional string Msg = 1;//返回的信息
+	required string Code = 2;//返回的状态码
+	optional string Quota = 3;//返回期限
+	optional string DurationTerm = 4;//返回期限
+	optional string CardDay = 5;//返回天数
+	optional string CardState = 6;//返回是否已经领取
+	optional string Denomination = 7;//返回总面额
+}
+
+//获取活动卡   MainID = 3 SubID = 706
+message CMD_GP_GetActivityCard
+{
+	optional string Msg = 1;//返回的信息
+	required string Code = 2;//返回的状态码
+	optional string Score = 3;//领取的开心豆
+}
+
+//领取救济金    MainID = 3 SubID = 707
+message CMD_GP_GetReliefMoney
+{
+	optional string Msg = 1;//返回的信息
+	required string Code = 2;//返回的状态码
+	optional string Score = 3;//领取的开心豆
+	optional string CountDown = 4;//领取的开心豆
+	optional string ReliefNum = 5;
+}
+
+//兑换话费     MainID = 3 SubID = 708
+message CMD_GP_GetPayPhone
+{
+	optional string Msg = 1;//返回的信息
+	required string Code = 2;//返回的状态码
+	optional string Award = 3;
+}
+
+//兑换开心豆 	MainID = 3 SubID = 709
+message CMD_GP_GetAwardGold
+{
+	required string Msg = 1;//返回的信息
+	required string Code = 2;//返回的状态码
+	optional string Award = 3;
+	optional string Gold = 4;
+}
+
+//查询兑换记录 MainID = 3 SubID = 710
+
+message SUB_GP_GetRechargeRecord
+{
+	message CMD_GP_RechargeRecordResult
+	{
+		required int32 Type = 1;//兑换类型
+		required string Desc1 = 2;//兑换内容
+		required string Desc2 = 3;//兑换获得的数量
+		required string Desc3 = 4;//兑换时间
+		required int32 Desc4 = 5;//兑换状态
+	}
+	repeated CMD_GP_RechargeRecordResult rechargeRecordResult = 1;//CMD_GP_RechargeRecordResult
+}
+
+//大厅分享得开心豆   MainID = 3 SubID = 711
+//message CMD_GP_GetHallSharing
+//{
+//	required string Msg = 1;//返回的信息
+//	required string Code = 2;//返回的状态码
+//	optional string Type = 3;//返回的分享类型
+//	optional string Souce = 4;//返回的分享获得金币
+//}
+
+//领取月卡每天开心豆  MainID = 3 SubID = 712
+message CMD_GP_GetMonthlyCardScore
+{
+	required string flag = 1;//月卡的状态
+	optional string Score = 2;//月卡领取的金币
+}
+
+//发送验证码   MainID = 3 SubID = 713
+message CMD_GP_SendPhoneSms
+{
+	required string MsgID = 1;//消息id
+	required string Msg = 2;//返回信息
+}
+
+//绑定手机   MainID = 3 SubID = 714
+message CMD_GP_PhoneBanding
+{
+	required string Success = 1;//消息id
+	required string Msg = 2;//返回信息
+}
+
+//重置保险箱密码   MainID = 3 SubID = 715
+message CMD_GP_ResetSafePwd
+{
+	required string Success = 1;//消息id
+	required string Msg = 2;//返回信息
+}
+
+//实名认证      MainID = 3 SubID = 716
+message CMD_GP_RealNameAuthentication
+{
+	required string Success = 1;//消息id
+	required string Msg = 2;//返回信息
+}
+
+//根据游戏id获取名称    MainID = 3 SubID = 717
+message CMD_GP_GetNickName
+{
+	required string NickName = 1;//昵称
+}
+
+//抽奖    MainID = 3 SubID = 718
+message CMD_GP_LuckDraw
+{
+	required string code = 1;//返回的状态码
+	optional string prize = 2;//抽奖获得的物品列表
+	optional string msg = 3;//错误信息
+}
+
+//领取注册新手礼包   MainID = 3 SubID = 719
+message CMD_GP_ReceiveNovicePack
+{
+	required string code = 1;//返回的状态码
+	optional string msg = 2;//错误信息
+	optional string mount = 3;
+	optional string totalAmount = 4;
+}
+
+//领取累计充值礼包     MainID = 3 SubID = 720
+message CMD_GP_GetRechargeCaseBag
+{
+	required string code = 1;//返回的状态码
+	optional string msg = 2;//返回的信息
+}
+
+
+//宝箱兑换     MainID = 3 SubID = 721
+message CMD_GP_BoxConversion
+{
+	required string code = 1;//返回的状态码
+	optional string msg = 2;//返回的信息
+}
+
+
+
+
+
+
+

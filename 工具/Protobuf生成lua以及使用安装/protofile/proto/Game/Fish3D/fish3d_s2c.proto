@@ -1,0 +1,271 @@
+package game.fish3d.s2c;
+option optimize_for = LITE_RUNTIME;
+
+//返回服务器版本号
+message CMD_S2C_AndroidUpdate
+{
+	required		int64			serverTime=1;						//机器人时间
+}
+
+//同步服务器时间
+message CMD_S2C_SyncServerTime
+{
+	required		int64			serverTime=1;						//当前服务器时间
+}
+
+//鱼阵时间信息
+message CMD_S2C_FormTimeInfo
+{
+	required		int32			isBegin=1;							///true是鱼阵开始时间， false是鱼阵结束时间
+	required		int64			time=2;								//绝对时间
+}
+
+//鱼阵鱼信息
+message tagFormFishOutInfo
+{
+	required		int32			outId=1;							//出鱼唯一ID
+	required		int32			fishId=2;							//出鱼ID
+	required		int32			fishSeqId=3;						//鱼所属序列ID
+	required		int32			traceId=4;							//对应轨迹ID
+	required		int64			beginTime=5;						//开始出鱼时间
+	required		int32			remainNum=6;						//对应轨迹ID
+	required		int32			interval=7;							//出鱼时间间隔
+	repeated		int64			aliveFish=8;						//鱼是否存活,鱼的index对应位表示鱼是否活着
+}
+
+//推送鱼阵详细信息
+message CMD_S2C_FishFormInfo
+{
+	repeated	tagFormFishOutInfo	outInfo=1;							//鱼阵信息
+}
+
+//玩家信息
+message tagSeatUserInfo
+{
+	required		int32			hasPlayer=1;						
+	required		int32			seat=2;
+	required		int32			gunID=3;
+	required		int32			gunType=4;
+	required		int64			silver=5;
+	required		int64			totalSilver=6;
+	required		int64			bullets=7;
+	required		int32			numId=8;
+	required		int32			isRobot=9;
+	required		int32			isOutboard=10;
+	required		int32			isAim=11;
+	required		int32			isAutoFire=12;
+}
+
+//鱼池中玩家信息
+message CMD_S2C_FishpondPlayer
+{
+	repeated		tagSeatUserInfo	userInfo=1;							//用户信息数组
+	repeated		string			nickName=2;							//用户昵称数组
+}
+
+//鱼信息
+message tagFishInfo
+{
+	required		int32			fishUniqId=1;						//鱼唯一ID
+	required		int32			fishId=2;							//鱼的ID
+	required		int32			traceId=3;							//鱼的轨迹ID
+	required		int64			bornTime=4;							//出现时间
+	required		int64			deadTime=5;							//死亡时间
+	required		int32			totalFreezeTime=6;					//总共被冰冻的时间
+	required		int32			index=7;							//如果是小鱼组，小鱼组存活鱼的信息
+}
+
+//鱼池中鱼信息
+message CMD_S2C_FishpondFish
+{
+	repeated		tagFishInfo 	fishInfo=1;							//鱼信息
+}
+
+//坐标点定义
+message tagFISHPOS
+{
+	required		float			x=1;								//X坐标
+	required		float			y=2;								//Y坐标
+}
+
+//子弹信息
+message tagBulletInfo
+{
+	required		int32			uniqueID=1;							//子弹的唯一ID
+	required		int32			gunID=2;							//发射子弹的炮台ID
+	required		int32			seat=3;								//发射子弹的位置
+	required		tagFISHPOS		targetPos=4;						//发射子弹的目标位置
+	required		int64			shootTime=5;						//子弹发射时间,单位 ms
+	required		int32			costSilver=6;						//发射子弹消耗的积分
+	required		int32			fishUniqID=7;						//瞄准目标鱼唯一ID，为0表示非瞄准子弹
+	required		int32			isAimFormFish=8;					//如果是瞄准，是否瞄准鱼阵中的鱼
+	required		int32			fishIndex=9;						//如果瞄准小鱼组，小鱼的index，1-5
+	required		int32			isWildBullet=10;					//是否狂暴状态的子弹
+}
+
+//鱼池中子弹信息
+message CMD_S2C_FishpondBullet
+{
+	repeated		tagBulletInfo	bulletInfo=1;						//鱼池中子弹
+}
+
+//鱼冰冻信息
+message tagFreezeInfo
+{
+	required		int32			uniqId=1;							//子弹的唯一ID
+	required		int64			freezeBeginTime=2;					//冰封开始时间
+	required		int32			freezeContTime=3;					//冰封持续时间
+	required		int32			totalFreezeTime=4;					//该鱼总共冰冻时间
+	required		int32			isFormFish=5;						//是否鱼阵中的鱼
+}
+
+//冰封鱼信息
+message CMD_S2C_FreezeFishInfo
+{
+	required		int32			seat=1;								//冰封鱼的玩家位置，-1表示没有
+	repeated		tagFreezeInfo	freezeInfo=2;						//鱼池中子弹
+}
+
+//新出鱼信息
+message CMD_S2C_NewFishData
+{
+	repeated		tagFishInfo 	fishInfo=1;							//鱼信息
+}
+
+//鱼池中玩家信息
+message CMD_S2C_SeatUserData
+{
+	required		tagSeatUserInfo	seatInfo=1;							//用户信息数组
+	required		string			nickName=2;							//用户昵称数组
+}
+
+message CMD_S2C_GlobalInfo
+{
+	required		int32			minCannonMulti=1;							
+	required		int32			maxCannonMulti=2;							
+}
+
+//子弹信息
+message CMD_S2C_BulletInfo
+{
+	required		tagBulletInfo	bulletInfo=1;						//子弹信息
+	required		int32			clientUniqId=2;					
+}
+
+//命中鱼的信息
+message CMD_S2C_HitFishInfo
+{
+	required		int32			bulletUniqId=1;						//子弹唯一ID
+	required		int32			fishUniqId=2;						//鱼的唯一ID
+	required		int32			seat=3;								//子弹对应的玩家椅子ID
+	required		int32			rewardSilver=4;						//命中奖励，为0表示没有命中
+	required		int32			isForm=5;							//是否命中鱼阵中的鱼
+	required		int32			fishIndex=6;						//如果是小鱼组，小鱼的index
+	required		int32			bulletLiveTime=7;					//如果是机器人的子弹，表示子弹存活时间，否则为0
+}
+
+// 技能命中鱼的信息
+message CMD_S2C_SkillHitFishInfo
+{
+	required		int32			skillId=1;							//技能ID
+	required		int32			fishUniqId=2;						//鱼的唯一ID
+	required		int32			seat=3;								//子弹对应的玩家椅子ID
+	required		int32			rewardSilver=4;						//命中奖励，为0表示没有命中
+	required		int32			isForm=5;							//是否命中鱼阵中的鱼
+	required		int32			fishIndex=6;						//如果是小鱼组，小鱼的index
+	required		int32			excludeFish=7;					
+	required		int32			excludeFishIndex=8;
+	required		int32			delay=9;						
+}
+
+//服务器出错信息
+message CMD_S2C_ErrorInfo
+{
+	required		int32			errorNo=1;							//错误码
+}
+
+// 服务器道具使用效果
+message CMD_S2C_ItemEffect
+{
+	required		int32			itemId=1;							//使用的道具ID
+	required		int32			effectType=2;						//道具生效类型
+	required		int32			seat=3;								//使用道具的玩家位置
+	required		int64			param1=4;							//生效参数1
+}
+
+// 服务器推送瞄准鱼信息
+message CMD_S2C_AimFishInfo
+{
+	required		int32			seat=1;								//瞄准鱼的玩家位置
+	required		int32			fishUniqId=2;						//鱼的唯一ID
+	required		int32			isFormFish=3;						//是否命中鱼阵中的鱼
+	required		int32			fishIndex=4;						//如果是小鱼组，小鱼的index
+}
+
+// 服务器银子更新信息
+message CMD_S2C_AddSilverInfo
+{
+	required		int32			seat=1;								//玩家的椅子位置
+	required		int64			addSilver=2;						//增加的银子数量， <0 表示扣除银子
+	required		int64			addToken=3;							//增加的代币数量， <0 表示扣除积分
+	required		int32			isManual=4;							//true表示上下分，false表示游戏内增减
+}
+
+// 服务器推送电死鱼的信息
+message CMD_S2C_BoomFishInfo
+{
+	repeated		int32			fishUniqIDs=1;						//最多能电死75条
+	repeated		int32			smallFishIndex=2;					//如果上面数组炸死的是小鱼组，这边为对应小鱼组的index
+	repeated		int32			formUniqIDs=3;						//最多能电死75条
+}
+
+// server 返回服务器版本号
+message  CMD_S2C_ServerVersion
+{
+	required		int32			serverVer=1;						//服务器的版本号
+}
+
+// 玩家获得点券信息
+message CMD_S2C_AddPhoneTicketInfo
+{
+	required		int32			seat=1;								//玩家座位号
+	required		int32			fishUniqId=2;						//暴点券的鱼唯一ID
+	required		int32			isFormFish=3;						//是否命中鱼阵中的鱼
+	required		int32			addNum=4;							//增加的数量
+	required		int32			fishIndex=5;						//如果是小鱼组，小鱼的index
+}
+
+// 玩家获得点券信息
+message CMD_S2C_SpecialBulletInfo
+{
+	required		int32			fishNum=1;							//击中鱼的数量
+	required		int32			seat=2;								//玩家座位号
+	required		int32			returnSilver=3;						
+}
+
+//服务器奖励开心豆
+message CMD_S2C_Reward
+{
+	required		int32			seat=1;								//玩家的椅子位置
+	required		int64			rewardSilver=2;						//增加的银子数量， <0 表示扣除银子
+}
+
+// 返回玩家瞄准
+message CMD_S2C_Aim
+{
+	required		int32			isAim=1;							//是否瞄准
+	required		int32			seatId=2;							//玩家的椅子位置
+}
+
+//当前章鱼奖励倍数
+message CMD_S2C_OctoposMultiple
+{
+	required		int32			octoposMultiple=1;					
+}
+
+//当前火球进度
+message CMD_S2C_TriggerFireProgress
+{
+	required		int32			seat=1;								//玩家的椅子位置			
+	required		float			progress=2;							
+}

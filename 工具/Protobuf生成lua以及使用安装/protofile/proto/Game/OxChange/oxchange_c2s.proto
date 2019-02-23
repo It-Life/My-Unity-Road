@@ -1,0 +1,41 @@
+package game.oxchange.c2s;
+option optimize_for = LITE_RUNTIME;
+
+//选择彩金//废弃
+message CMD_C2S_SelectScoreMode
+{
+	required		bool			selectMode=1;						//选择模式
+}
+
+//用户叫庄
+message CMD_C2S_CallBanker
+{
+	required		int32			banker=1;							//做庄标志
+}
+
+//用户加注
+message CMD_C2S_AddScore
+{
+	required		int64			score=1;							//加注数目
+}
+
+//用户摊牌
+message CMD_C2S_OxCard
+{
+	required		int32			ox=1;								//牛牛标志
+}
+
+//输赢控制//暂时废弃
+message CMD_C2S_WinLost
+{
+	required		int32			gameId=1;							//游戏ID
+	required		int32			count=2;							//子弹唯一ID
+	required		int32			winLost=3;							//输赢
+}
+
+//表情
+message CMD_C2S_PostEmotion
+{
+	required		int32			type=1;								//类型
+	required		int32			emotionId=2;						//表情id
+}

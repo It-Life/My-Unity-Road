@@ -1,0 +1,101 @@
+package game.birdsandbeasts.s2c;
+option optimize_for = LITE_RUNTIME;
+
+//排行榜用户信息 输赢排行榜 对应的是 SRankUserInfo
+message tagSRankUserInfo 
+{
+	required		int32			chairId=1;							//用户椅子ID
+	required		int64			winLose=2;							//用户输赢分
+}
+ 
+//游戏状态 休息场景 游戏空闲， 对应的是 CMD_S_StatusFree
+message CMD_S2C_GameSceneRest
+{
+	required		int32			timeRemain=1;						//剩余休息时间
+	required		int64			bonusPool=2;						//彩金池
+	repeated		int64			remainCanBetScore=3;				//各下注区域剩余可下总注
+}
+
+//游戏状态 下注场景 对应的是 CMD_S_StatusPlay
+message CMD_S2C_GameSceneBet 
+{
+	required		int32			timeRemain=1;						//剩余休息时间
+	repeated		int64			allBetScore=2;						//每门总下注
+	repeated		int64			myBetScore=3;						//每门个人总下注
+	required		int64			bonusPool=4;						//彩金池
+	repeated		int64			remainCanBetScore=5;				//各下注区域剩余可下总注
+}
+
+//游戏状态 开奖场景 对应的是 CMD_S_StatusEnd
+message CMD_S2C_GameSceneResult
+{
+	required		int32			timeRemain=1;						//剩余休息时间
+	repeated		int64			allBetScore=2;						//每门总下注
+	repeated		int64			myBetScore=3;						//每门个人总下注
+	required		int32			turntableId=4;						//转盘ID(0-27, 无效:255)
+	required		int64			bonusPool=5;						//彩金池
+	required		int64			bonusPoolWinLose=6;					//彩金池加减分
+	required		int32			rankUserInfoCount=7;				//排行榜用户数量
+	repeated		tagSRankUserInfo rankUserInfo=8;					//排行榜用户信息
+	repeated		int64			remainCanBetScore=9;				//各下注区域剩余可下总注
+	required		int32			sharkMultEx=10;						//恐龙附加倍数
+}
+
+//下注阶段 对应的是 CMD_S_GameStart
+message CMD_S2C_GameStepBet 
+{
+	required		int32			byTimeBet=1;						//下注时间
+}
+
+//玩家下注 对应的是 CMD_S_PlaceJetton
+message CMD_S2C_PlayerBet 
+{
+	required		int32			chairId=1;							//椅子ID
+	required		int32			byBetAreaID=2;						//下注区域ID(0-10)
+	required		int64			betScore=3;							//下注数目
+	repeated		int64			remainCanBetScore=4;				//各下注区域剩余可下总注
+}
+
+//游戏结束 对应的是 CMD_S_GameEnd
+message CMD_S2C_GameStepResult
+{
+	required		int32			byTimeResult=1;						//开奖时间
+	required		int32			byTurntableId=2;					//转盘ID(0-27, 无效:255)
+	required		int64			clientWinScore=3;					//客户端显示玩家押中分(包括下注分,税后)	//改180122:改成下边的字段lWinLoseScore
+	required		int64			winLoseScore=4;						//玩家输赢分(不包括下注分,税后)
+	required		int64			playerNewScore=5;					//玩家最新分
+	required		int64			bonusPoolWinLose=6;					//彩金池加减分
+	required		int32			byRankUserInfoCount=7;				//排行榜用户数量
+	repeated		tagSRankUserInfo rankUserInfo=8;					//排行榜用户信息
+	required		int32			sharkMultEx=9;						//恐龙附加倍数
+}
+
+//休息阶段 对应的是 CMD_S_GameFree 
+message CMD_S2C_GameStepRest
+{
+	required		int32			byTimeRest=1;						//休息时间
+	required		int64			bonusPool=2;						//彩金池
+	required		bool 			hasRedPacket=3;						//是否有红包  ps：这里改成了bool值，原先是byte 0、1  
+}
+
+//历史记录 对应的是 CMD_S_ServerGameRecord
+message CMD_S2C_ResultHistory
+{
+	required		int32			byHistoryCount=1;					//历史记录数量
+	repeated		int64			byHistoryData=2;					//历史记录数据(存储动物ID:0-10)
+}
+
+//清空下注 对应的是 CMD_S_ClearBet
+message CMD_S2C_ClearBet
+{
+	required		int32			chairId=1;							//座位号
+	repeated		int64			betScore=2;							//各下注区域需要减少的分
+	required		int64			betTotalScore=3;					//总减少分
+}
+
+
+//发送红包 对应的是 CMD_S_RedPacket
+message CMD_S2C_RedPacket
+{
+	required		int64			redPacketScore=1;					//红包金额
+}

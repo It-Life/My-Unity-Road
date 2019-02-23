@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+option java_package = "com.example.websocket.bean";
+option java_outer_classname = "Common";
+message Header 
+{
+    optional int32 CMDcbVersion = 1;
+    optional int32 CMDcbCheckCode = 2;
+    optional int32 CMDwPacketSize = 3;
+    optional int32 TCPcbDataKind = 4;
+    optional int32 TCPcbCheckCode = 5;
+    optional int32 TCPwPacketSize = 6;
+    required int32 MainID = 7;
+    required int32 SubID = 8;
+}

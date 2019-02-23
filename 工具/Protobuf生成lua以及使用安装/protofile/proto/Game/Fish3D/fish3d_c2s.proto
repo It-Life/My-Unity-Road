@@ -1,0 +1,102 @@
+package game.fish3d.c2s;
+option optimize_for = LITE_RUNTIME;
+
+//切换炮台倍数
+message CMD_C2S_ChangeGunMulti
+{
+	required		int32			newGunId=1;							//新的炮台
+}
+
+//切换炮台类型
+message CMD_C2S_ChangeGunType
+{
+	required		int32			gunType=1;							//炮台类型
+}
+
+//发射子弹
+message CMD_C2S_ShootBullet
+{
+	required		int64			shootTime=1;						//发射时间
+	required		float			posX=2;								//发射角度X
+	required		float			posY=3;								//发射角度Y
+	required		int32			uniqId=4;							//客户端子弹的唯一ID
+}
+
+//打中鱼
+message CMD_C2S_HitFish
+{
+	required		int64			hitTime=1;							//命中时间
+	required		int32			bulletUniqId=2;						//子弹唯一ID
+	required		int32			fishUniqId=3;						//鱼唯一ID
+	required		int32			fishIndex=4;						//小鱼在鱼组中的下标
+}
+
+//打中鱼
+message CMD_C2S_HitFormFish
+{
+	required		int64			hitTime=1;							//命中时间
+	required		int32			bulletUniqId=2;						//子弹唯一ID
+	required		int32			formOutID=3;						//鱼阵出鱼唯一ID
+	required		int32			fishIndex=4;						//小鱼在鱼组中的下标
+}
+
+//使用鱼道具
+message CMD_C2S_UseFishProperty
+{
+	required		int32			itemId=1;							//道具ID
+}
+
+//取消鱼道具
+message CMD_C2S_CancelFishProperty
+{
+	required		int32			itemId=1;							//道具ID
+}
+
+//瞄准鱼
+message CMD_C2S_ChooseAimFish
+{
+	required		int32			fishUniqId=1;						//鱼唯一ID
+	required		int32			isFormFish=2;						//是否鱼阵中鱼
+	required		int32			fishIndex=3;						//小鱼在鱼组中的下标
+}
+
+//上下分
+message CMD_C2S_AddUserSilver
+{
+	required		int64			addSilver=1;						//正的表示上分，负的表示下分
+}
+
+//机器人起立
+message CMD_C2S_AndroidStandUp
+{
+	required		int32			serverTime=1;						
+}
+
+//机器人发子弹
+message CMD_C2S_AndroidShoot
+{
+	required		int32			fishUniqId=1;						//鱼唯一ID			
+	required		int64			shootTime=2;						//发射时间
+	required		int32			posX=3;								//发射角度X
+	required		int32			posY=4;								//发射角度Y
+	required		int32			bulletLiveTime=5;					//子弹存活时间
+}
+
+//检查客户端版本号
+message CMD_C2S_CheckClientVer
+{
+	required		int32			clientVer=1;						//客户端版本号				
+}
+
+//挂机请求
+message CMD_C2S_Outboard
+{
+	required		int32			isOutboard=1;						//是否挂机
+}
+
+//自动发射请求
+message CMD_C2S_AutoFire
+{
+	required		int32			isAutoFire=1;						//是否自动发射 
+}
+

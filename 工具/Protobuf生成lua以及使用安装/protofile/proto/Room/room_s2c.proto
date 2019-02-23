@@ -1,0 +1,157 @@
+package room.s2c;
+option optimize_for = LITE_RUNTIME;
+
+//用户状态
+message tagUserStatus
+{
+	required		int32						tableId=1;								//桌子ID
+	required		int32						chairId=2;								//椅子ID
+	required		int32						userStatus=3;							//用户状态
+};
+
+//桌子状态
+message tagTableStatus
+{
+	required		int32						tableLock=1;							//锁定标志
+	required		int32						playStatus=2;							//游戏标志
+	required		int32						cellScore=3;							//底分信息
+};
+
+//用户积分
+message tagUserScore
+{
+	//积分信息
+	required		int64						score=1;								//用户分数
+	optional		int64						grade=2;								//用户成绩
+	required		int64						insure=3;								//用户银行
+
+	//输赢信息
+	required		int32						winCount=4;								//胜利盘数
+	required		int32						lostCount=5;							//失败盘数
+	required		int32						drawCount=6;							//和局盘数
+	required		int32						fleeCount=7;							//逃跑盘数
+	optional		int64						integralCount=8;						//积分总数(当前房间)
+	//天梯系统添加
+	optional		int64						danScore=9;								//段位积分
+	optional		int32						awardFlag=10;							//奖励标志
+	optional		int32						winStreak=11;							//连胜局数
+
+	//全局信息
+	optional		int32						userMedal=12;							//用户奖牌
+	optional		int32						experience=13;							//用户经验
+	optional		int32						loveLiness=14;							//用户魅力
+	optional        int32                   	memberOrder=15;         	            //用户会员等级
+	optional        int64               		ticket=16;                  	        //用户奖券数
+};
+
+
+//用户信息
+message tagUserInfo
+{
+	required		int32						gameId=1;								//游戏id
+	required		int32						userId=2;								//用户id
+	optional		int32						groupId=3;								//社团id
+	optional		int32						faceId=4;								//头像id
+	optional		int32						customId=5;								//自定义id
+	required		int32						gender=6;								//性别
+	required		int32						memberOrder=7;							//会员等级
+	required		int32						masterOrder=8;							//管理等级
+	required		tagUserStatus				userStatus=9;							//状态
+	required		tagUserScore				userScore=10;							//用户分数
+	optional		int32						roomCard=11;							//房卡数量
+	optional		int32                       rechargeAmount=12;	                    //用户累计充值
+	optional		int32						takeCount=13;							//赠送局数
+	required		string 						nickName=14;							//昵称
+	optional		string 						groupName=15;							//社团
+	optional		string 						underWrite=16;							//个性签名
+}
+
+//登录成功
+message CMD_GR_LogonSuccess
+{
+	required		int32						userRight=1;							//用户权限
+	required		int32						masterRight=2;							//用户权限
+}
+
+//登录失败
+message CMD_GR_LogonFailure
+{
+	required		int32						errorCode=1;							//错误代码
+	required		string						describeString=2;						//错误字符串
+}
+
+//配置信息
+message CMD_GR_ConfigServer
+{
+	required		int32						tableCount=1;							//桌子数
+	required		int32						chairCount=2;							//椅子数
+	required		int32						serverType=3;							//服务类型
+	required		int32						serverRule=4;							//房间规则
+	required		bool						setScore=5;								//能否设置
+	optional		int32						maxTimes=6;								//最大倍数
+	optional		bool						caijinRoom=7;							//彩金房间标志
+}
+
+//请求失败
+message CMD_GR_RequestFailure
+{
+	required		int32						errorCode=1;							//错误代码
+	required		string						describeString=2;						//描述信息
+};
+
+//用户状态
+message CMD_GR_UserStatus
+{
+	required		int32						userId=1;								//用户标识
+	required		tagUserStatus				userStatus=2;							//用户状态
+};
+
+//用户分数
+message CMD_GR_UserScore
+{
+	required		int32						userId=1;								//用户标识
+	required		tagUserScore				userScore=2;							//用户分数
+};
+
+//系统消息
+message CMD_CM_SystemMessage
+{
+	required		int32						type=1;									//消息类型
+	required		string						msgContent=2;							//描述信息
+};
+
+//桌子状态
+message CMD_GR_TableStatus
+{
+	required		int32						tableId=1;								//桌子号码
+	required		tagTableStatus				tableStatus=2;							//桌子状态
+};
+
+//用户聊天
+message CMD_GR_S_UserChat
+{
+	required		int32						chatColor=1;							//信息颜色
+	required		int32						sendUserID=2;							//发送用户
+	required		int32						targetUserID=3;							//目标用户
+	required		string						chatString=4;							//聊天信息
+};
+
+//玩家表情
+message CMD_GR_S_UserExpression
+{
+	required		int32						itemIndex=1;							//表情索引
+	required		int32						sendUserId=2;							//发送用户ID
+	required		int32						targetUserId=3;							//目标用户ID
+}
+
+//桌子信息
+message CMD_GR_TableInfo
+{
+	repeated		tagTableStatus				tableStatusArray=1;						//桌子状态
+}
+
+//游戏状态
+message CMD_GF_GameStatus
+{
+	required		int32 						gameStatus=1;							//游戏状态
+}

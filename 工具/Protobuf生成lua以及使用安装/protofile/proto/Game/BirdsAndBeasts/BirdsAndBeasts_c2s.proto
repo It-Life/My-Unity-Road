@@ -1,0 +1,9 @@
+package game.birdsandbeasts.c2s;
+option optimize_for = LITE_RUNTIME;
+//CMD_C2S_PlayerBet 主命令MAIN_CMD.MDM_GF_GAME = 200 子命令ClientCmd.PlaceJetton = 1
+//玩家下注对应的是CMD_C_PlaceJetton
+message CMD_C2S_PlayerBet
+{
+	required		int32			betAreaId=1;						//下注区域ID(0-10)
+	required		int64			betScore=2;							//下注数目
+}
